@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bloodhound-cli"
+dynamic = ["version"]
+description = "CLI tool to interact with the BloodHound CE API"
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "exploide", email = "me@exploide.net" },
+]
+classifiers = [
+  "Programming Language :: Python",
+]
+dependencies = [
+  "click",
+]
+
+[project.urls]
+Documentation = "https://github.com/exploide/bloodhound-cli#readme"
+Issues = "https://github.com/exploide/bloodhound-cli/issues"
+Source = "https://github.com/exploide/bloodhound-cli"
+
+[project.scripts]
+bhcli = "bloodhound_cli.cli:bloodhound_cli"
+
+[tool.hatch.version]
+path = "src/bloodhound_cli/__about__.py"
