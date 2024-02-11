@@ -4,6 +4,7 @@ from bloodhound_cli.__about__ import __version__
 from bloodhound_cli import logger
 from .auth import auth
 from .domains import domains
+from .upload import upload
 
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
@@ -17,3 +18,4 @@ def bloodhound_cli(debug=False):
 
 bloodhound_cli.add_command(auth)
 bloodhound_cli.add_command(domains)
+bloodhound_cli.add_command(upload)

@@ -114,6 +114,36 @@ class Api:
         return self._send("POST", endpoint, data)
 
 
+    def upload_status(self, file_upload_id=None):
+        """Return status of file upload jobs."""
+
+        endpoint = "/api/v2/file-upload"
+        if file_upload_id is not None:
+            endpoint += f"?id=eq:{file_upload_id}"
+        return self._send("GET", endpoint)
+
+
+    def start_upload(self):
+        """Start a new file upload job."""
+
+        endpoint = "/api/v2/file-upload/start"
+        return self._send("POST", endpoint)
+
+
+    def upload_file(self, file_upload_id, file_content):
+        """Upload a file to an existing file upload job."""
+
+        endpoint = f"/api/v2/file-upload/{file_upload_id}"
+        return self._send("POST", endpoint, file_content)
+
+
+    def end_upload(self, file_upload_id):
+        """End a file upload job."""
+
+        endpoint = f"/api/v2/file-upload/{file_upload_id}/end"
+        return self._send("POST", endpoint)
+
+
     def domains(self):
         """Return available domains."""
 
