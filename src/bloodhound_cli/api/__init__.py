@@ -2,6 +2,7 @@ import base64
 import datetime
 import hashlib
 import hmac
+import json
 import urllib
 
 import requests
@@ -36,7 +37,7 @@ class Api:
         self._bearer = bearer
 
 
-    def _send(self, method, endpoint, body=None):
+    def _send(self, method, endpoint, data=None):
         """Send a request to the API and return the JSON data from the response."""
 
         if not self._url:
@@ -47,6 +48,10 @@ class Api:
             "User-Agent": "bhcli",
         }
 
+        if data is not None:
+            data = json.dumps(data)
+            headers["Content-Type"] = "application/json"
+
         if self._token_id is not None:
             # compute the authentication MAC according to the BloodHound docs
             digester = hmac.new(self._token_key.encode(), None, hashlib.sha256)
@@ -55,8 +60,8 @@ class Api:
             datetime_formatted = datetime.datetime.now().astimezone().isoformat("T")
             digester.update(datetime_formatted[:13].encode())
             digester = hmac.new(digester.digest(), None, hashlib.sha256)
-            if body is not None:
-                digester.update(body)
+            if data is not None:
+                digester.update(data.encode())
             headers["Authorization"] = f"bhesignature {self._token_id}"
             headers["RequestDate"] = datetime_formatted
             headers["Signature"] = base64.b64encode(digester.digest())
@@ -65,7 +70,7 @@ class Api:
             headers["Authorization"] = f"Bearer {self._bearer}"
 
         log.debug("Sending %s request to API endpoint %s", method, endpoint)
-        result = requests.request(method=method, url=endpoint_url, headers=headers, json=body, timeout=(3.1, 60))
+        result = requests.request(method=method, url=endpoint_url, headers=headers, data=data, timeout=(3.1, 60))
         log.debug("Received response with code %d:", result.status_code)
         log.debug("%s", result.text)
 
@@ -74,20 +79,22 @@ class Api:
                 raise ApiException("Authentication failure, try to obtain an API token with the auth subcommand first.", result)
             raise ApiException("Received unexpected response from server.", result)
 
-        return result.json()["data"]
+        if result.content:
+            return result.json()["data"]
+        return {}
 
 
     def login(self, username, password):
         """Login to the API with username and password to obtain a Bearer token."""
 
         endpoint = "/api/v2/login"
-        body = {
+        data = {
             "login_method": "secret",
             "secret": password,
             "username": username,
         }
         try:
-            return self._send("POST", endpoint, body)
+            return self._send("POST", endpoint, data)
         except ApiException as e:
             if e.response.status_code == 401:
                 raise ApiException("Authentication failure, probably the password is wrong.", e.response) from e
@@ -100,11 +107,11 @@ class Api:
         """Create and return a new API token with a given name for a specific user."""
 
         endpoint = "/api/v2/tokens"
-        body = {
+        data = {
             "token_name": token_name,
             "user_id": user_id,
         }
-        return self._send("POST", endpoint, body)
+        return self._send("POST", endpoint, data)
 
 
     def domains(self):
