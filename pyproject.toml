@@ -18,6 +18,7 @@ classifiers = [
 ]
 dependencies = [
   "click",
+  "requests",
 ]
 
 [project.urls]
@@ -26,7 +27,7 @@ Issues = "https://github.com/exploide/bloodhound-cli/issues"
 Source = "https://github.com/exploide/bloodhound-cli"
 
 [project.scripts]
-bhcli = "bloodhound_cli.cli:bloodhound_cli"
+bhcli = "bloodhound_cli.__main__:main"
 
 [tool.hatch.version]
 path = "src/bloodhound_cli/__about__.py"
