@@ -149,3 +149,14 @@ class Api:
 
         endpoint = "/api/v2/available-domains"
         return self._send("GET", endpoint)
+
+
+    def cypher(self, query, include_properties=True):
+        """Run a raw Cypher query."""
+
+        endpoint = "/api/v2/graphs/cypher"
+        data = {
+            "include_properties": include_properties,
+            "query": query,
+        }
+        return self._send("POST", endpoint, data)

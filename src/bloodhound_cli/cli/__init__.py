@@ -3,6 +3,7 @@ import click
 from bloodhound_cli.__about__ import __version__
 from bloodhound_cli import logger
 from .auth import auth
+from .cypher import cypher
 from .domains import domains
 from .upload import upload
 
@@ -17,5 +18,6 @@ def bloodhound_cli(debug=False):
 
 
 bloodhound_cli.add_command(auth)
+bloodhound_cli.add_command(cypher)
 bloodhound_cli.add_command(domains)
 bloodhound_cli.add_command(upload)
