@@ -176,3 +176,18 @@ class Api:
             query = query.where_multiple(filters)
         query = query.return_literal("u")
         return self.cypher(str(query))["nodes"].values()
+
+
+    def computers(self, domain=None, enabled=None):
+        """Return all computer objects."""
+
+        query = QueryBuilder().match().node(labels="Computer", ref_name="c")
+        filters = {}
+        if domain is not None:
+            filters["c.domain"] = domain
+        if enabled is not None:
+            filters["c.enabled"] = enabled
+        if filters:
+            query = query.where_multiple(filters)
+        query = query.return_literal("c")
+        return self.cypher(str(query))["nodes"].values()
