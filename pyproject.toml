@@ -18,6 +18,7 @@ classifiers = [
 ]
 dependencies = [
   "click",
+  "cymple",
   "requests",
 ]
 

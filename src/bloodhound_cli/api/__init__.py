@@ -6,6 +6,7 @@ import json
 import urllib
 
 import requests
+from cymple import QueryBuilder
 
 from bloodhound_cli.logger import log
 from .exceptions import ApiException
@@ -160,3 +161,18 @@ class Api:
             "query": query,
         }
         return self._send("POST", endpoint, data)
+
+
+    def users(self, domain=None, enabled=None):
+        """Return all user objects."""
+
+        query = QueryBuilder().match().node(labels="User", ref_name="u")
+        filters = {}
+        if domain is not None:
+            filters["u.domain"] = domain
+        if enabled is not None:
+            filters["u.enabled"] = enabled
+        if filters:
+            query = query.where_multiple(filters)
+        query = query.return_literal("u")
+        return self.cypher(str(query))["nodes"].values()

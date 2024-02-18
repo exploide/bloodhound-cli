@@ -6,6 +6,7 @@ from .auth import auth
 from .cypher import cypher
 from .domains import domains
 from .upload import upload
+from .users import users
 
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
@@ -21,3 +22,4 @@ bloodhound_cli.add_command(auth)
 bloodhound_cli.add_command(cypher)
 bloodhound_cli.add_command(domains)
 bloodhound_cli.add_command(upload)
+bloodhound_cli.add_command(users)
