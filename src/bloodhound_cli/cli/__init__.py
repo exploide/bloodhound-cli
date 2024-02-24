@@ -6,6 +6,7 @@ from .auth import auth
 from .computers import computers
 from .cypher import cypher
 from .domains import domains
+from .groups import groups
 from .upload import upload
 from .users import users
 
@@ -23,5 +24,6 @@ bloodhound_cli.add_command(auth)
 bloodhound_cli.add_command(computers)
 bloodhound_cli.add_command(cypher)
 bloodhound_cli.add_command(domains)
+bloodhound_cli.add_command(groups)
 bloodhound_cli.add_command(upload)
 bloodhound_cli.add_command(users)

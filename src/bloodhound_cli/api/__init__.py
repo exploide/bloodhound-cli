@@ -191,3 +191,16 @@ class Api:
             query = query.where_multiple(filters)
         query = query.return_literal("c")
         return self.cypher(str(query))["nodes"].values()
+
+
+    def groups(self, domain=None):
+        """Return all group objects."""
+
+        query = QueryBuilder().match().node(labels="Group", ref_name="g")
+        filters = {}
+        if domain is not None:
+            filters["g.domain"] = domain
+        if filters:
+            query = query.where_multiple(filters)
+        query = query.return_literal("g")
+        return self.cypher(str(query))["nodes"].values()
