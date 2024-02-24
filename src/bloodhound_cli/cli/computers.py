@@ -6,7 +6,7 @@ from bloodhound_cli.api.from_config import api
 @click.command()
 @click.option("--domain", "-d", metavar="DOMAIN", help="Show only computers of specific domain.")
 @click.option("--enabled", flag_value=True, default=None, help="Show only enabled computers.")
-@click.option("--sam", is_flag=True, help="Show SAM-Account-Name.")
+@click.option("--sam", is_flag=True, help="Show SAM account name.")
 @click.option("--pre-win2k-pw", is_flag=True, help="Show pre-win2k password candidate.")
 @click.option("--description", is_flag=True, help="Show description.")
 @click.option("--sep", "-s", metavar="SEP", default="\t", help="Separator between fields (default: tab).")
