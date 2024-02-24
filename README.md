@@ -52,6 +52,7 @@ Commands:
   computers  Get info on computers.
   cypher     Run a raw Cypher query and print the response as JSON.
   domains    Get info on domains.
+  groups     Get info on groups.
   upload     Upload and ingest files from the BloodHound collector.
   users      Get info on users.
 ```
@@ -128,6 +129,19 @@ The `computers` subcommand outputs lists of computer objects.
 $ bhcli computers --domain dev.contoso.com --sam
 DC02.DEV.CONTOSO.COM	DC02$
 WEB06.DEV.CONTOSO.COM	WEB06$
+```
+
+
+### groups
+
+The `groups` subcommand outputs lists of group objects.
+
+```console
+$ bhcli groups
+ACCESS CONTROL ASSISTANCE OPERATORS@DEV.CONTOSO.COM
+ACCOUNT OPERATORS@DEV.CONTOSO.COM
+ADMINISTRATORS@DEV.CONTOSO.COM
+ALLOWED RODC PASSWORD REPLICATION GROUP@DEV.CONTOSO.COM
 ```
 
 
