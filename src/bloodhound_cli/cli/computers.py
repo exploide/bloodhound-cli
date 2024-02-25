@@ -1,6 +1,9 @@
+import sys
+
 import click
 
 from bloodhound_cli.api.from_config import api
+from bloodhound_cli.logger import log
 
 
 @click.command()
@@ -14,10 +17,16 @@ from bloodhound_cli.api.from_config import api
 def computers(domain, enabled, sam, pre_win2k_pw, description, sep, skip_empty):
     """Get info on computers."""
 
+    domainsid = None
     if domain:
-        domain = domain.upper()
-    result = api.computers(domain=domain, enabled=enabled)
-    result = sorted(result, key=lambda c: (c["properties"].get("domain", ""), (c["properties"].get("name", ""))))
+        try:
+            domainsid = [d["id"] for d in api.domains() if d["name"] == domain.upper()][0]
+        except IndexError:
+            log.error("Unknown domain %s.", domain)
+            sys.exit(1)
+
+    result = api.computers(domainsid=domainsid, enabled=enabled)
+    result = sorted(result, key=lambda c: (c["properties"].get("domain", "").upper(), (c["properties"].get("name", ""))))
 
     for computer in result:
         props = computer["properties"]

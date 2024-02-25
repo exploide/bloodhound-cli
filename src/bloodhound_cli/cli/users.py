@@ -1,6 +1,9 @@
+import sys
+
 import click
 
 from bloodhound_cli.api.from_config import api
+from bloodhound_cli.logger import log
 
 
 @click.command()
@@ -14,10 +17,16 @@ from bloodhound_cli.api.from_config import api
 def users(domain, enabled, sam, displayname, description, sep, skip_empty):
     """Get info on users."""
 
+    domainsid = None
     if domain:
-        domain = domain.upper()
-    result = api.users(domain=domain, enabled=enabled)
-    result = sorted(result, key=lambda u: (u["properties"].get("domain", ""), (u["properties"].get("name", ""))))
+        try:
+            domainsid = [d["id"] for d in api.domains() if d["name"] == domain.upper()][0]
+        except IndexError:
+            log.error("Unknown domain %s.", domain)
+            sys.exit(1)
+
+    result = api.users(domainsid=domainsid, enabled=enabled)
+    result = sorted(result, key=lambda u: (u["properties"].get("domain", "").upper(), (u["properties"].get("name", ""))))
 
     for user in result:
         props = user["properties"]
