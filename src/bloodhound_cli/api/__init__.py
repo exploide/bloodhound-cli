@@ -163,44 +163,33 @@ class Api:
         return self._send("POST", endpoint, data)
 
 
-    def users(self, domain=None, enabled=None):
-        """Return all user objects."""
+    def _objects(self, kind, **kwargs):
+        """Return objects of a given kind, filtered by properties given in kwargs."""
 
-        query = QueryBuilder().match().node(labels="User", ref_name="u")
+        query = QueryBuilder().match().node(labels=kind, ref_name="n")
         filters = {}
-        if domain is not None:
-            filters["u.domain"] = domain
-        if enabled is not None:
-            filters["u.enabled"] = enabled
+        for key, value in kwargs.items():
+            if value is not None:
+                filters[f"n.{key}"] = value
         if filters:
             query = query.where_multiple(filters)
-        query = query.return_literal("u")
+        query = query.return_literal("n")
         return self.cypher(str(query))["nodes"].values()
 
 
-    def computers(self, domain=None, enabled=None):
-        """Return all computer objects."""
+    def users(self, **kwargs):
+        """Return user objects, filtered by properties given in kwargs."""
 
-        query = QueryBuilder().match().node(labels="Computer", ref_name="c")
-        filters = {}
-        if domain is not None:
-            filters["c.domain"] = domain
-        if enabled is not None:
-            filters["c.enabled"] = enabled
-        if filters:
-            query = query.where_multiple(filters)
-        query = query.return_literal("c")
-        return self.cypher(str(query))["nodes"].values()
+        return self._objects("User", **kwargs)
 
 
-    def groups(self, domain=None):
-        """Return all group objects."""
+    def computers(self, **kwargs):
+        """Return computer objects, filtered by properties given in kwargs."""
 
-        query = QueryBuilder().match().node(labels="Group", ref_name="g")
-        filters = {}
-        if domain is not None:
-            filters["g.domain"] = domain
-        if filters:
-            query = query.where_multiple(filters)
-        query = query.return_literal("g")
-        return self.cypher(str(query))["nodes"].values()
+        return self._objects("Computer", **kwargs)
+
+
+    def groups(self, **kwargs):
+        """Return group objects, filtered by properties given in kwargs."""
+
+        return self._objects("Group", **kwargs)
