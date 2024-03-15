@@ -7,7 +7,7 @@ from bloodhound_cli.api.from_config import api
 @click.option("--sid", is_flag=True, help="Show SIDs.")
 @click.option("--sep", "-s", metavar="SEP", default="\t", help="Separator between fields (default: tab).")
 def domains(sid, sep):
-    """Get info on domains."""
+    """Get lists of domains."""
 
     result = api.domains()
     result = sorted(result, key=lambda d: d["name"])

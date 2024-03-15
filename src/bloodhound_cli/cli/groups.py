@@ -13,7 +13,7 @@ from bloodhound_cli.logger import log
 @click.option("--sep", "-s", metavar="SEP", default="\t", help="Separator between fields (default: tab).")
 @click.option("--skip-empty", is_flag=True, help="Skip entry when one field is empty.")
 def groups(domain, sam, description, sep, skip_empty):
-    """Get info on groups."""
+    """Get lists of groups."""
 
     domainsid = None
     if domain:

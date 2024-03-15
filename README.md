@@ -49,13 +49,13 @@ Options:
 
 Commands:
   auth       Authenticate to the server and configure an API token.
-  computers  Get info on computers.
+  computers  Get lists of computers.
   cypher     Run a raw Cypher query and print the response as JSON.
-  domains    Get info on domains.
-  groups     Get info on groups.
+  domains    Get lists of domains.
+  groups     Get lists of groups.
   stats      Get statistics on domains.
   upload     Upload and ingest files from the BloodHound collector.
-  users      Get info on users.
+  users      Get lists of users.
 ```
 
 Passing `-h` to any of the subcommands will show the usage for the specific subcommand.

@@ -15,7 +15,7 @@ from bloodhound_cli.logger import log
 @click.option("--sep", "-s", metavar="SEP", default="\t", help="Separator between fields (default: tab).")
 @click.option("--skip-empty", is_flag=True, help="Skip entry when one field is empty.")
 def computers(domain, enabled, sam, pre_win2k_pw, description, sep, skip_empty):
-    """Get info on computers."""
+    """Get lists of computers."""
 
     domainsid = None
     if domain:

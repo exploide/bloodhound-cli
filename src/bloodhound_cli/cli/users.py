@@ -15,7 +15,7 @@ from bloodhound_cli.logger import log
 @click.option("--sep", "-s", metavar="SEP", default="\t", help="Separator between fields (default: tab).")
 @click.option("--skip-empty", is_flag=True, help="Skip entry when one field is empty.")
 def users(domain, enabled, sam, displayname, description, sep, skip_empty):
-    """Get info on users."""
+    """Get lists of users."""
 
     domainsid = None
     if domain:
