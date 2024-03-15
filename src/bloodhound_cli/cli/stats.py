@@ -11,7 +11,7 @@ from bloodhound_cli.logger import log
 @click.command()
 @click.option("--domain", "-d", metavar="DOMAIN", help="Show stats for specific domain.")
 def stats(domain):
-    """Get statistics on domain objects."""
+    """Get statistics on domains."""
 
     domains = sorted((d["name"], d["id"]) for d in api.domains())
     if domain:
@@ -53,6 +53,13 @@ def stats(domain):
         result = api.group_members(f"{domsid}-{RID.DOMAIN_CONTROLLERS}", kind="Computer")
         row.append(len(result))
         result = [c for c in result if c["properties"].get("enabled", "")]
+        row.append(len(result))
+        table.add_row(row)
+
+        row = ["Protected users"]
+        result = api.group_members(f"{domsid}-{RID.PROTECTED_USERS}", kind="User")
+        row.append(len(result))
+        result = [u for u in result if u["properties"].get("enabled", "")]
         row.append(len(result))
         table.add_row(row)
 

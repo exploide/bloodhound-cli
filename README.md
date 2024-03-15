@@ -53,7 +53,7 @@ Commands:
   cypher     Run a raw Cypher query and print the response as JSON.
   domains    Get info on domains.
   groups     Get info on groups.
-  stats      Get statistics on domain objects.
+  stats      Get statistics on domains.
   upload     Upload and ingest files from the BloodHound collector.
   users      Get info on users.
 ```
@@ -159,6 +159,7 @@ $ bhcli stats -d contoso.com
 │ Computer accounts  │       6 │       6 │
 │ Domain admins      │       2 │       2 │
 │ Domain controllers │       1 │       1 │
+│ Protected users    │       0 │       0 │
 │ Groups             │      58 │         │
 └────────────────────┴─────────┴─────────┘
 ```
