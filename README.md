@@ -53,6 +53,7 @@ Commands:
   cypher     Run a raw Cypher query and print the response as JSON.
   domains    Get info on domains.
   groups     Get info on groups.
+  stats      Get statistics on domain objects.
   upload     Upload and ingest files from the BloodHound collector.
   users      Get info on users.
 ```
@@ -142,6 +143,24 @@ ACCESS CONTROL ASSISTANCE OPERATORS@DEV.CONTOSO.COM
 ACCOUNT OPERATORS@DEV.CONTOSO.COM
 ADMINISTRATORS@DEV.CONTOSO.COM
 ALLOWED RODC PASSWORD REPLICATION GROUP@DEV.CONTOSO.COM
+```
+
+
+### stats
+
+The `stats` subcommand is useful to get a statistical overview about the domain.
+
+```console
+$ bhcli stats -d contoso.com
+┌────────────────────┬─────────┬─────────┐
+│ CONTOSO.COM        │   all   │ enabled │
+├────────────────────┼─────────┼─────────┤
+│ User accounts      │      10 │       7 │
+│ Computer accounts  │       6 │       6 │
+│ Domain admins      │       2 │       2 │
+│ Domain controllers │       1 │       1 │
+│ Groups             │      58 │         │
+└────────────────────┴─────────┴─────────┘
 ```
 
 
