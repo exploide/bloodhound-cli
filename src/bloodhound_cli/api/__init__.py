@@ -193,3 +193,15 @@ class Api:
         """Return group objects, filtered by properties given in kwargs."""
 
         return self._objects("Group", **kwargs)
+
+
+    def group_members(self, group_sid, kind=None):
+        """Return members of a given group (including indirect members)."""
+
+        query = QueryBuilder().match() \
+            .node(labels="Group", ref_name="g") \
+            .related_from("MemberOf", min_hops=1, max_hops=-1) \
+            .node(labels=kind, ref_name="m") \
+            .where("g.objectid", "=", group_sid) \
+            .return_literal("m")
+        return self.cypher(str(query))["nodes"].values()

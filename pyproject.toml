@@ -19,6 +19,7 @@ classifiers = [
 dependencies = [
   "click",
   "cymple",
+  "prettytable",
   "requests",
 ]
 
