@@ -2,6 +2,7 @@ import click
 
 from bloodhound_cli.__about__ import __version__
 from bloodhound_cli import logger
+from .audit import audit
 from .auth import auth
 from .computers import computers
 from .cypher import cypher
@@ -21,6 +22,7 @@ def bloodhound_cli(debug=False):
     logger.set_loglevel(debug)
 
 
+bloodhound_cli.add_command(audit)
 bloodhound_cli.add_command(auth)
 bloodhound_cli.add_command(computers)
 bloodhound_cli.add_command(cypher)

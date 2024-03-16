@@ -155,6 +155,7 @@ class Api:
     def cypher(self, query, include_properties=True):
         """Run a raw Cypher query."""
 
+        log.debug("Prepared Cypher query: %s", query)
         endpoint = "/api/v2/graphs/cypher"
         data = {
             "include_properties": include_properties,
