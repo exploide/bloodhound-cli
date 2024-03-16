@@ -48,6 +48,7 @@ Options:
   -h, --help  Show this message and exit.
 
 Commands:
+  audit      Audit domains for potential security issues.
   auth       Authenticate to the server and configure an API token.
   computers  Get lists of computers.
   cypher     Run a raw Cypher query and print the response as JSON.
@@ -162,6 +163,29 @@ $ bhcli stats -d contoso.com
 │ Protected users    │       0 │       0 │
 │ Groups             │      58 │         │
 └────────────────────┴─────────┴─────────┘
+```
+
+
+### audit
+
+The `audit` subcommand reports potential security issues within the domain, which might lead to a quick win.
+
+```console
+$ bhcli audit -d contoso.com
+CONTOSO.COM
+=========
+
+[*] Kerberoastable user accounts of high value (enabled)
+    1 accounts found
+ADMINISTRATOR@CONTOSO.COM
+
+[*] AS-REP-roastable user accounts (enabled)
+    1 accounts found
+JOHN@CONTOSO.COM
+
+[*] Accounts trusted for unconstrained delegation (enabled, no DCs)
+    1 accounts found
+APPSRV02.CONTOSO.COM
 ```
 
 
