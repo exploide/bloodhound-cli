@@ -145,10 +145,12 @@ class Api:
         return self._send("POST", endpoint)
 
 
-    def domains(self):
+    def domains(self, collected=None):
         """Return available domains."""
 
         endpoint = "/api/v2/available-domains"
+        if collected is not None:
+            endpoint += f"?collected=eq:{collected}"
         return self._send("GET", endpoint)
 
 

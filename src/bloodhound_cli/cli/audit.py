@@ -13,7 +13,7 @@ from bloodhound_cli.logger import log
 def audit(domain):
     """Audit domains for potential security issues."""
 
-    domains = sorted((d["name"], d["id"]) for d in api.domains())
+    domains = sorted((d["name"], d["id"]) for d in api.domains(collected=True))
     if domain:
         domains = [d for d in domains if d[0] == domain.upper()]
         if not domains:
