@@ -1,6 +1,4 @@
-import json
 import time
-from zipfile import ZipFile
 
 import click
 
@@ -21,25 +19,16 @@ def upload(files):
 
     for file in files:
         if file.lower().endswith(".json"):
-            log.info("Uploading file %s", file)
-            with open(file, "r", encoding="utf-8-sig") as f:
-                content = json.load(f)
-            api.upload_file(upload_id, content)
-
+            content_type = "application/json"
         elif file.lower().endswith(".zip"):
-            log.info("Processing ZIP file %s", file)
-            with ZipFile(file) as z:
-                for zipped_file in z.namelist():
-                    if zipped_file.lower().endswith(".json"):
-                        log.info("Uploading file %s from %s", zipped_file, file)
-                        with z.open(zipped_file) as f:
-                            content = json.load(f)
-                        api.upload_file(upload_id, content)
-                    else:
-                        log.warning("ZIP %s contains unsupported file %s which will be ignored", file, zipped_file)
-
+            content_type = "application/zip"
         else:
             log.warning("File of unsupported type will be ignored: %s", file)
+            continue
+        with open(file, "rb") as f:
+            content = f.read()
+        log.info("Uploading file %s", file)
+        api.upload_file(upload_id, content, content_type)
 
     log.info("Ending file upload job...")
     api.end_upload(upload_id)

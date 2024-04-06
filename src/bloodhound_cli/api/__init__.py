@@ -38,7 +38,7 @@ class Api:
         self._bearer = bearer
 
 
-    def _send(self, method, endpoint, data=None):
+    def _send(self, method, endpoint, data=None, content_type="application/json"):
         """Send a request to the API and return the JSON data from the response."""
 
         if not self._url:
@@ -50,8 +50,9 @@ class Api:
         }
 
         if data is not None:
-            data = json.dumps(data)
-            headers["Content-Type"] = "application/json"
+            if isinstance(data, dict):
+                data = json.dumps(data).encode()
+            headers["Content-Type"] = content_type
 
         if self._token_id is not None:
             # compute the authentication MAC according to the BloodHound docs
@@ -62,7 +63,7 @@ class Api:
             digester.update(datetime_formatted[:13].encode())
             digester = hmac.new(digester.digest(), None, hashlib.sha256)
             if data is not None:
-                digester.update(data.encode())
+                digester.update(data)
             headers["Authorization"] = f"bhesignature {self._token_id}"
             headers["RequestDate"] = datetime_formatted
             headers["Signature"] = base64.b64encode(digester.digest())
@@ -131,11 +132,11 @@ class Api:
         return self._send("POST", endpoint)
 
 
-    def upload_file(self, file_upload_id, file_content):
+    def upload_file(self, file_upload_id, file_content, content_type):
         """Upload a file to an existing file upload job."""
 
         endpoint = f"/api/v2/file-upload/{file_upload_id}"
-        return self._send("POST", endpoint, file_content)
+        return self._send("POST", endpoint, file_content, content_type)
 
 
     def end_upload(self, file_upload_id):

@@ -7,7 +7,6 @@ But once filled with data, the BloodHound database is also a great source of inf
 A lot of information you typically dump from LDAP is already available in BloodHound.
 
 Retrieve lists of user names for further processing, grep in the description field, or even run custom Cypher queries, `bhcli` makes the information accessible on the commandline.
-Oh and it can ingest ZIP files!
 
 I implemented basic features I often need first, with probably more to follow.
 
@@ -92,14 +91,7 @@ The `upload` subcommand can be used to ingest data from JSON or ZIP files into t
 ```console
 $ bhcli upload *.zip
 INFO: Starting new file upload job...
-INFO: Processing ZIP file 20231022025250_BloodHound.zip
-INFO: Uploading file 20231022025250_computers.json from 20231022025250_BloodHound.zip
-INFO: Uploading file 20231022025250_users.json from 20231022025250_BloodHound.zip
-INFO: Uploading file 20231022025250_groups.json from 20231022025250_BloodHound.zip
-INFO: Uploading file 20231022025250_containers.json from 20231022025250_BloodHound.zip
-INFO: Uploading file 20231022025250_domains.json from 20231022025250_BloodHound.zip
-INFO: Uploading file 20231022025250_gpos.json from 20231022025250_BloodHound.zip
-INFO: Uploading file 20231022025250_ous.json from 20231022025250_BloodHound.zip
+INFO: Uploading file 20240404165636_BloodHound.zip
 INFO: Ending file upload job...
 INFO: Now waiting for ingestion being complete...
 INFO: Ingestion completed, the data is now available.
