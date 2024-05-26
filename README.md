@@ -174,6 +174,12 @@ $ bhcli audit -d contoso.com
 CONTOSO.COM
 =========
 
+[*] Interesting privileges for domain users or computers
+    2 relations found
+Group                                   Relation                      Target                               Kind of Target
+AUTHENTICATED USERS@CONTOSO.COM         ADCSESC1                      CONTOSO.COM                          Domain
+EVERYONE@CONTOSO.COM                    GenericWrite                  JANE@CONTOSO.COM                     User
+
 [*] Kerberoastable user accounts of high value (enabled)
     1 accounts found
 ADMINISTRATOR@CONTOSO.COM

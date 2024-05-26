@@ -1,6 +1,7 @@
 import sys
 
 import click
+import prettytable
 
 from bloodhound_cli import cypher
 from bloodhound_cli.api.from_config import api
@@ -23,6 +24,31 @@ def audit(domain):
     for dom, domsid in domains:
         print(dom)
         print("=" * len(dom))
+        print()
+
+        print("[*] Interesting privileges for domain users or computers")
+        query = f"""MATCH (b:Group)-[:MemberOf*0..]->(g:Group)
+                {cypher.where("b", comparison_operator="IN", objectid=[f"{domsid}-{RID.DOMAIN_USERS}", f"{domsid}-{RID.DOMAIN_COMPUTERS}"])}
+                WITH g
+                MATCH p=(g)-[r]->(o)
+                WHERE NOT type(r) IN ["MemberOf", "MemberOfLocalGroup", "LocalToComputer", "Enroll"]
+                RETURN p
+                """
+        result = api.cypher(query)
+        nodes = result["nodes"]
+        edges = result["edges"]
+        relations = set()
+        for edge in edges:
+            relations.add((nodes[edge['source']]['label'], edge['label'], nodes[edge['target']]['label'], nodes[edge['target']]['kind']))
+        count = len(relations)
+        print(f"    {count} relations found")
+        if count > 0:
+            table = prettytable.PrettyTable()
+            table.set_style(prettytable.PLAIN_COLUMNS)
+            table.align = "l"
+            table.field_names = ["Group", "Relation", "Target", "Kind of Target"]
+            table.add_rows(sorted(relations))
+            print(table)
         print()
 
         print("[*] Kerberoastable user accounts of high value (enabled)")

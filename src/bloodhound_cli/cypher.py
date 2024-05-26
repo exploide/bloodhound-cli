@@ -10,6 +10,15 @@ def escape(param):
     if isinstance(param, bool):
         return str(param).lower()
 
+    if isinstance(param, list):
+        escaped_list = []
+        for x in param:
+            if isinstance(x, str):
+                escaped_list.append(f'"{escape(x)}"')
+            else:
+                escaped_list.append(f'{escape(x)}')
+        return f'[{', '.join(escaped_list)}]'
+
     raise TypeError("Unsupported parameter type for a Cypher query.")
 
 
@@ -27,7 +36,7 @@ def node(name=None, label=None):
 def where(node_name, comparison_operator="=", boolean_operator="AND", **kwargs):
     """Construct WHERE clauses comparing properties of node as specified in kwargs."""
 
-    if comparison_operator not in ["="]:
+    if comparison_operator not in ["=", "IN"]:
         raise ValueError("Unsupported comparison operator for WHERE.")
     if boolean_operator not in ["AND", "OR"]:
         raise ValueError("Unsupported boolean operator for WHERE.")
@@ -40,7 +49,7 @@ def where(node_name, comparison_operator="=", boolean_operator="AND", **kwargs):
             escaped_value = escape(value)
             if isinstance(value, str):
                 clauses.append(f'`{node_name}`.`{escaped_key}` {comparison_operator} "{escaped_value}"')
-            elif isinstance(value, bool):
+            else:
                 clauses.append(f'`{node_name}`.`{escaped_key}` {comparison_operator} {escaped_value}')
 
     if clauses:
