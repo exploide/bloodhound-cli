@@ -6,8 +6,8 @@ import json
 import urllib
 
 import requests
-from cymple import QueryBuilder
 
+from bloodhound_cli import cypher
 from bloodhound_cli.logger import log
 from .exceptions import ApiException
 
@@ -170,15 +170,11 @@ class Api:
     def _objects(self, kind, **kwargs):
         """Return objects of a given kind, filtered by properties given in kwargs."""
 
-        query = QueryBuilder().match().node(labels=kind, ref_name="n")
-        filters = {}
-        for key, value in kwargs.items():
-            if value is not None:
-                filters[f"n.{key}"] = value
-        if filters:
-            query = query.where_multiple(filters)
-        query = query.return_literal("n")
-        return self.cypher(str(query))["nodes"].values()
+        query = f"""MATCH ({cypher.node("n", kind)})
+                {cypher.where("n", **kwargs)}
+                RETURN n
+                """
+        return self.cypher(query)["nodes"].values()
 
 
     def users(self, **kwargs):
@@ -202,10 +198,8 @@ class Api:
     def group_members(self, group_sid, kind=None):
         """Return members of a given group (including indirect members)."""
 
-        query = QueryBuilder().match() \
-            .node(labels="Group", ref_name="g") \
-            .related_from("MemberOf", min_hops=1, max_hops=-1) \
-            .node(labels=kind, ref_name="m") \
-            .where("g.objectid", "=", group_sid) \
-            .return_literal("m")
-        return self.cypher(str(query))["nodes"].values()
+        query = f"""MATCH (g:Group)<-[:MemberOf*1..]-({cypher.node("m", kind)})
+                {cypher.where("g", objectid=group_sid)}
+                RETURN m
+                """
+        return self.cypher(query)["nodes"].values()
