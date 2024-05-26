@@ -9,6 +9,14 @@ from bloodhound_cli.constants import RID
 from bloodhound_cli.logger import log
 
 
+boring_relations = [
+    "Enroll",
+    "LocalToComputer",
+    "MemberOf",
+    "MemberOfLocalGroup",
+]
+
+
 @click.command()
 @click.option("--domain", "-d", metavar="DOMAIN", help="Audit specific domain only.")
 def audit(domain):
@@ -31,7 +39,7 @@ def audit(domain):
                 {cypher.where("b", comparison_operator="IN", objectid=[f"{domsid}-{RID.DOMAIN_USERS}", f"{domsid}-{RID.DOMAIN_COMPUTERS}"])}
                 WITH g
                 MATCH p=(g)-[r]->(o)
-                WHERE NOT type(r) IN ["MemberOf", "MemberOfLocalGroup", "LocalToComputer", "Enroll"]
+                WHERE NOT type(r) IN {cypher.escape(boring_relations)}
                 RETURN p
                 """
         result = api.cypher(query)
@@ -47,6 +55,31 @@ def audit(domain):
             table.set_style(prettytable.PLAIN_COLUMNS)
             table.align = "l"
             table.field_names = ["Group", "Relation", "Target", "Kind of Target"]
+            table.add_rows(sorted(relations))
+            print(table)
+        print()
+
+        print("[*] Interesting privileges for guests")
+        query = f"""MATCH (b:User)-[:MemberOf*0..]->(g)
+                {cypher.where("b", objectid=f"{domsid}-{RID.GUEST}")}
+                WITH g
+                MATCH p=(g)-[r]->(o)
+                WHERE NOT type(r) IN {cypher.escape(boring_relations)}
+                RETURN p
+                """
+        result = api.cypher(query)
+        nodes = result["nodes"]
+        edges = result["edges"]
+        relations = set()
+        for edge in edges:
+            relations.add((nodes[edge['source']]['label'], edge['label'], nodes[edge['target']]['label'], nodes[edge['target']]['kind']))
+        count = len(relations)
+        print(f"    {count} relations found")
+        if count > 0:
+            table = prettytable.PrettyTable()
+            table.set_style(prettytable.PLAIN_COLUMNS)
+            table.align = "l"
+            table.field_names = ["Guest Object", "Relation", "Target", "Kind of Target"]
             table.add_rows(sorted(relations))
             print(table)
         print()

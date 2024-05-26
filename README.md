@@ -176,9 +176,12 @@ CONTOSO.COM
 
 [*] Interesting privileges for domain users or computers
     2 relations found
-Group                                   Relation                      Target                               Kind of Target
-AUTHENTICATED USERS@CONTOSO.COM         ADCSESC1                      CONTOSO.COM                          Domain
-EVERYONE@CONTOSO.COM                    GenericWrite                  JANE@CONTOSO.COM                     User
+Group                                  Relation            Target                  Kind of Target
+AUTHENTICATED USERS@CONTOSO.COM        ADCSESC1            CONTOSO.COM             Domain
+EVERYONE@CONTOSO.COM                   GenericWrite        JANE@CONTOSO.COM        User
+
+[*] Interesting privileges for guests
+    0 relations found
 
 [*] Kerberoastable user accounts of high value (enabled)
     1 accounts found
