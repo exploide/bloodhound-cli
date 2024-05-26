@@ -1,3 +1,4 @@
+import sys
 import time
 
 import click
@@ -38,5 +39,8 @@ def upload(files):
         time.sleep(5)
         result = api.upload_status(upload_id)
         if result[0]["status"] == 2:
-            break
-    log.info("Ingestion completed, the data is now available.")
+            log.info("Ingestion completed, the data is now available.")
+            sys.exit(0)
+        if result[0]["status"] == 5:
+            log.error("Ingestion failed: %s", result[0]["status_message"])
+            sys.exit(1)
