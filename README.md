@@ -7,8 +7,8 @@ But once filled with data, the BloodHound database is also a great source of inf
 A lot of information you typically dump from LDAP is already available in BloodHound.
 
 Retrieve lists of user names for further processing, grep in the description field, or even run custom Cypher queries, `bhcli` makes the information accessible on the commandline.
-
-I implemented basic features I often need first, with probably more to follow.
+You can also mark a bunch of objects as owned or perform an audit to search for interesting permissions.
+Check the help message below for all features.
 
 
 ## Installation
@@ -60,6 +60,7 @@ Commands:
   cypher     Run a raw Cypher query and print the response as JSON.
   domains    Get lists of domains.
   groups     Get lists of groups.
+  owned      Mark objects as owned.
   stats      Get statistics on domains.
   upload     Upload and ingest files from the BloodHound collector.
   users      Get lists of users.
@@ -194,6 +195,16 @@ JOHN@CONTOSO.COM
 [*] Accounts trusted for unconstrained delegation (enabled, no DCs)
     1 accounts found
 APPSRV02.CONTOSO.COM
+```
+
+
+### owned
+
+The `owned` subcommand allows to mark a bunch of objects as owned.
+
+```console
+$ bhcli owned --file successful_password_spraying.txt
+INFO: Marked 6 objects as owned.
 ```
 
 

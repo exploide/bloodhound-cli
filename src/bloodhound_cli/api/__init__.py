@@ -50,7 +50,7 @@ class Api:
         }
 
         if data is not None:
-            if isinstance(data, dict):
+            if isinstance(data, (dict, list)):
                 data = json.dumps(data).encode()
             headers["Content-Type"] = content_type
 
@@ -144,6 +144,32 @@ class Api:
 
         endpoint = f"/api/v2/file-upload/{file_upload_id}/end"
         return self._send("POST", endpoint)
+
+
+    def search(self, name, kind=None):
+        """Search for a node by name, optionally restricted to a specific kind."""
+
+        endpoint = f"/api/v2/search?q={urllib.parse.quote_plus(name)}"
+        if kind is not None:
+            endpoint += f"&type={urllib.parse.quote_plus(kind)}"
+        return self._send("GET", endpoint)
+
+
+    def add_to_asset_group(self, asset_group_id, sids):
+        """Add one or more objects identified by their sid to an asset group."""
+
+        endpoint = f"/api/v2/asset-groups/{asset_group_id}/selectors"
+        if isinstance(sids, str):
+            sids = [sids]
+        data = [
+            {
+                "action": "add",
+                "selector_name": sid,
+                "sid": sid,
+            }
+            for sid in sids
+        ]
+        return self._send("POST", endpoint, data)
 
 
     def domains(self, collected=None):
