@@ -8,8 +8,8 @@ from bloodhound_cli.logger import log
 
 @click.command()
 @click.option("--domain", "-d", metavar="DOMAIN", help="Show only computers of specific domain.")
-@click.option("--enabled", flag_value=True, default=None, help="Show only enabled computers.")
-@click.option("--owned", flag_value=True, default=None, help="Show only computers marked as owned.")
+@click.option("--enabled/--disabled", default=None, help="Show only enabled/disabled computers.")
+@click.option("--owned/--not-owned", default=None, help="Show only computers (not) marked as owned.")
 @click.option("--sam", is_flag=True, help="Show SAM account name.")
 @click.option("--pre-win2k-pw", is_flag=True, help="Show pre-win2k password candidate.")
 @click.option("--description", is_flag=True, help="Show description.")
@@ -31,8 +31,9 @@ def computers(domain, enabled, owned, sam, pre_win2k_pw, description, sep, skip_
 
     for computer in result:
         props = computer["properties"]
-        if owned is True:
-            if "owned" not in props.get("system_tags", "").split():
+        if owned is not None:
+            is_owned = "owned" in props.get("system_tags", "").split()
+            if owned != is_owned:
                 continue
         try:
             out = [props["name"]]

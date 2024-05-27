@@ -8,8 +8,8 @@ from bloodhound_cli.logger import log
 
 @click.command()
 @click.option("--domain", "-d", metavar="DOMAIN", help="Show only users of specific domain.")
-@click.option("--enabled", flag_value=True, default=None, help="Show only enabled users.")
-@click.option("--owned", flag_value=True, default=None, help="Show only users marked as owned.")
+@click.option("--enabled/--disabled", default=None, help="Show only enabled/disabled users.")
+@click.option("--owned/--not-owned", default=None, help="Show only users (not) marked as owned.")
 @click.option("--sam", is_flag=True, help="Show SAM account name.")
 @click.option("--displayname", is_flag=True, help="Show display name.")
 @click.option("--description", is_flag=True, help="Show description.")
@@ -31,8 +31,9 @@ def users(domain, enabled, owned, sam, displayname, description, sep, skip_empty
 
     for user in result:
         props = user["properties"]
-        if owned is True:
-            if "owned" not in props.get("system_tags", "").split():
+        if owned is not None:
+            is_owned = "owned" in props.get("system_tags", "").split()
+            if owned != is_owned:
                 continue
         try:
             out = [props["name"]]
