@@ -17,7 +17,7 @@ def escape(param):
                 escaped_list.append(f'"{escape(x)}"')
             else:
                 escaped_list.append(f'{escape(x)}')
-        return f'[{', '.join(escaped_list)}]'
+        return f"[{', '.join(escaped_list)}]"
 
     raise TypeError("Unsupported parameter type for a Cypher query.")
 
