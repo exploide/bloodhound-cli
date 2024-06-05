@@ -184,13 +184,19 @@ class Api:
     def cypher(self, query, include_properties=True):
         """Run a raw Cypher query."""
 
+        query = query.strip()
         log.debug("Prepared Cypher query: %s", query)
         endpoint = "/api/v2/graphs/cypher"
         data = {
             "include_properties": include_properties,
             "query": query,
         }
-        return self._send("POST", endpoint, data)
+        try:
+            return self._send("POST", endpoint, data)
+        except ApiException as e:
+            if e.response.status_code == 404:
+                return { "nodes": {}, "edges": [] }
+            raise
 
 
     def _objects(self, kind, **kwargs):
