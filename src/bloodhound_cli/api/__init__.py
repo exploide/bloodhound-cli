@@ -3,6 +3,7 @@ import datetime
 import hashlib
 import hmac
 import json
+import time
 import urllib
 
 import requests
@@ -79,7 +80,12 @@ class Api:
         if not result.ok:
             if result.status_code == 401:
                 raise ApiException("Authentication failure, try to obtain an API token with the auth subcommand first.", result)
-            raise ApiException("Received unexpected response from server.", result)
+            if result.status_code == 429:
+                rate_limit_duration = int(result.headers["X-Rate-Limit-Duration"])
+                log.info("Hit request rate limiting. Waiting for %d seconds, then trying again...", rate_limit_duration)
+                time.sleep(rate_limit_duration)
+                return self._send(method, endpoint, data, content_type)
+            raise ApiException("Received unexpected response from server. Run with --debug for more information.", result)
 
         if result.content:
             return result.json()["data"]
