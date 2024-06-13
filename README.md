@@ -2,12 +2,14 @@
 
 A CLI tool to interact with the [BloodHound CE](https://github.com/SpecterOps/BloodHound) API.
 
-BloodHound is *the* tool to work with Active Directory attack paths, taking advantage of modeling security-relevant relationships in a graph with nodes and edges.
-But once filled with data, the BloodHound database is also a great source of information useful beyond the BloodHound GUI.
-A lot of information you typically dump from LDAP is already available in BloodHound.
+BloodHound by SpecterOps is *the* tool to work with Active Directory attack paths, taking advantage of modeling security-relevant relationships in a graph with nodes and edges.
 
-Retrieve lists of user names for further processing, grep in the description field, or even run custom Cypher queries, `bhcli` makes the information accessible on the commandline.
-You can also mark a bunch of objects as owned or perform an audit to search for interesting permissions.
+Once filled with data, the BloodHound database is also a great source of information useful beyond the BloodHound GUI.
+A lot of information you typically dump from LDAP is already available in BloodHound.
+`bhcli` makes this information accessible on the commandline.
+Retrieve lists of user names for further processing, grep in the description field, or even run custom Cypher queries.
+
+`bhcli` can also mark a bunch of objects as owned, import/export your custom queries and might perform an audit to search for interesting permissions.
 Check the help message below for all features.
 
 
@@ -61,6 +63,7 @@ Commands:
   domains    Get lists of domains.
   groups     Get lists of groups.
   owned      Mark objects as owned.
+  queries    Import and export custom queries.
   stats      Get statistics on domains.
   upload     Upload and ingest files from the BloodHound collector.
   users      Get lists of users.
@@ -120,6 +123,7 @@ ADMINISTRATOR@DEV.CONTOSO.COM	Built-in account for administering the computer/do
 APACHESVC@DEV.CONTOSO.COM
 JULIA@DEV.CONTOSO.COM
 SQLSVC01@DEV.CONTOSO.COM
+...
 ```
 
 
@@ -131,6 +135,7 @@ The `computers` subcommand outputs lists of computer objects.
 $ bhcli computers --domain dev.contoso.com --sam
 DC02.DEV.CONTOSO.COM	DC02$
 WEB06.DEV.CONTOSO.COM	WEB06$
+...
 ```
 
 
@@ -144,6 +149,7 @@ ACCESS CONTROL ASSISTANCE OPERATORS@DEV.CONTOSO.COM
 ACCOUNT OPERATORS@DEV.CONTOSO.COM
 ADMINISTRATORS@DEV.CONTOSO.COM
 ALLOWED RODC PASSWORD REPLICATION GROUP@DEV.CONTOSO.COM
+...
 ```
 
 
@@ -200,11 +206,23 @@ APPSRV02.CONTOSO.COM
 
 ### owned
 
-The `owned` subcommand allows to mark a bunch of objects as owned.
+The `owned` subcommand allows to mark a bunch of user and computer objects as owned.
 
 ```console
 $ bhcli owned --file successful_password_spraying.txt
 INFO: Marked 6 objects as owned.
+```
+
+
+### queries
+
+The `queries` subcommand allows to import and export custom Cypher queries.
+The import file must either be in the format that the `--save` option produces or in the legacy Bloodhound's `customqueries.json` format.
+Note that not everything from the latter might be compatible.
+
+```console
+$ bhcli queries my-bloodhound-queries.json
+INFO: Imported 12 custom queries.
 ```
 
 
