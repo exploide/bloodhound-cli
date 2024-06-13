@@ -178,6 +178,26 @@ class Api:
         return self._send("POST", endpoint, data)
 
 
+    def get_saved_queries(self, sort_by=None):
+        """Get saved custom queries."""
+
+        endpoint = "/api/v2/saved-queries"
+        if sort_by is not None:
+            endpoint += f"?sort_by={urllib.parse.quote_plus(sort_by)}"
+        return self._send("GET", endpoint)
+
+
+    def add_saved_query(self, name, query):
+        """Add a custom query."""
+
+        endpoint = "/api/v2/saved-queries"
+        data = {
+            "name": name,
+            "query": query,
+        }
+        return self._send("POST", endpoint, data)
+
+
     def domains(self, collected=None):
         """Return available domains."""
 
