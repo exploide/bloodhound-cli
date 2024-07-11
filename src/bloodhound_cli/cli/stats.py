@@ -28,35 +28,35 @@ def stats(domain):
         table.align["  all  "] = "r"
         table.align["enabled"] = "r"
 
-        row = ["User accounts"]
+        row = ["User Accounts"]
         result = api.users(domainsid=domsid)
         row.append(len(result))
         result = [u for u in result if u["properties"].get("enabled", "")]
         row.append(len(result))
         table.add_row(row)
 
-        row = ["Computer accounts"]
+        row = ["Computer Accounts"]
         result = api.computers(domainsid=domsid)
         row.append(len(result))
         result = [c for c in result if c["properties"].get("enabled", "")]
         row.append(len(result))
         table.add_row(row)
 
-        row = ["Domain admins"]
+        row = ["Domain Admins"]
         result = api.group_members(f"{domsid}-{RID.DOMAIN_ADMINS}", kind="User")
         row.append(len(result))
         result = [u for u in result if u["properties"].get("enabled", "")]
         row.append(len(result))
         table.add_row(row)
 
-        row = ["Domain controllers"]
+        row = ["Domain Controllers"]
         result = api.group_members(f"{domsid}-{RID.DOMAIN_CONTROLLERS}", kind="Computer")
         row.append(len(result))
         result = [c for c in result if c["properties"].get("enabled", "")]
         row.append(len(result))
         table.add_row(row)
 
-        row = ["Protected users"]
+        row = ["Protected Users"]
         result = api.group_members(f"{domsid}-{RID.PROTECTED_USERS}", kind="User")
         row.append(len(result))
         result = [u for u in result if u["properties"].get("enabled", "")]
@@ -65,6 +65,24 @@ def stats(domain):
 
         row = ["Groups"]
         result = api.groups(domainsid=domsid)
+        row.append(len(result))
+        row.append("")
+        table.add_row(row)
+
+        row = ["Root CAs"]
+        result = api.root_cas(domainsid=domsid)
+        row.append(len(result))
+        row.append("")
+        table.add_row(row)
+
+        row = ["Enterprise CAs"]
+        result = api.enterprise_cas(domainsid=domsid)
+        row.append(len(result))
+        row.append("")
+        table.add_row(row)
+
+        row = ["Cert Templates"]
+        result = api.cert_templates(domainsid=domsid)
         row.append(len(result))
         row.append("")
         table.add_row(row)

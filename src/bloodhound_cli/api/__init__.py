@@ -261,3 +261,21 @@ class Api:
                 RETURN m
                 """
         return self.cypher(query)["nodes"].values()
+
+
+    def root_cas(self, **kwargs):
+        """Return RootCA objects, filtered by properties given in kwargs."""
+
+        return self._objects("RootCA", **kwargs)
+
+
+    def enterprise_cas(self, **kwargs):
+        """Return EnterpriseCA objects, filtered by properties given in kwargs."""
+
+        return self._objects("EnterpriseCA", **kwargs)
+
+
+    def cert_templates(self, **kwargs):
+        """Return CertTemplate objects, filtered by properties given in kwargs."""
+
+        return self._objects("CertTemplate", **kwargs)

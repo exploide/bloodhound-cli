@@ -162,12 +162,15 @@ $ bhcli stats -d contoso.com
 ┌────────────────────┬─────────┬─────────┐
 │ CONTOSO.COM        │   all   │ enabled │
 ├────────────────────┼─────────┼─────────┤
-│ User accounts      │      10 │       7 │
-│ Computer accounts  │       6 │       6 │
-│ Domain admins      │       2 │       2 │
-│ Domain controllers │       1 │       1 │
-│ Protected users    │       0 │       0 │
-│ Groups             │      58 │         │
+│ User Accounts      │      40 │      25 │
+│ Computer Accounts  │      11 │      10 │
+│ Domain Admins      │       4 │       3 │
+│ Domain Controllers │       1 │       1 │
+│ Protected Users    │       0 │       0 │
+│ Groups             │      84 │         │
+│ Root CAs           │       1 │         │
+│ Enterprise CAs     │       2 │         │
+│ Cert Templates     │      43 │         │
 └────────────────────┴─────────┴─────────┘
 ```
 
