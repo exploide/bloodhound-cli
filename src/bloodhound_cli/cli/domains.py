@@ -10,12 +10,10 @@ from bloodhound_cli.api.from_config import api
 def domains(collected, sid, sep):
     """Get lists of domains."""
 
-    result = api.domains()
+    result = api.domains(collected=collected)
     result = sorted(result, key=lambda d: d["name"])
 
     for domain in result:
-        if collected is not None and collected != domain.get("collected", False):
-            continue
         out = [domain["name"]]
         if sid:
             out.append(domain["id"])

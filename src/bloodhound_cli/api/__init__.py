@@ -203,7 +203,7 @@ class Api:
 
         endpoint = "/api/v2/available-domains"
         if collected is not None:
-            endpoint += f"?collected=eq:{collected}"
+            endpoint += f"?collected=eq:{str(collected).lower()}"
         return self._send("GET", endpoint)
 
 
