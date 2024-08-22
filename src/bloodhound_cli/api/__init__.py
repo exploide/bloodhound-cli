@@ -85,7 +85,7 @@ class Api:
                 log.info("Hit request rate limiting. Waiting for %d seconds, then trying again...", rate_limit_duration)
                 time.sleep(rate_limit_duration)
                 return self._send(method, endpoint, data, content_type)
-            raise ApiException("Received unexpected response from server. Run with --debug for more information.", result)
+            raise ApiException("Received unexpected response from server. Run 'bhcli --debug ...' for more information.", result)
 
         if result.content:
             return result.json()["data"]
