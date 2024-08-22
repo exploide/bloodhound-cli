@@ -24,7 +24,7 @@ def queries(file, save):
     if save:
     # export queries
         result = api.get_saved_queries(sort_by="name")
-        queries_to_export = [{key: entry[key] for key in ("name", "query")} for entry in result]
+        queries_to_export = [{key: entry[key] for key in ("name", "query", "description")} for entry in result]
         with open(file, "w", encoding="UTF-8") as f:
             json.dump(queries_to_export, f, indent=4)
         log.info("Saved %d queries to %s", len(queries_to_export), file)
@@ -52,7 +52,7 @@ def queries(file, save):
         num_queries = 0
         for query in queries_to_import:
             try:
-                result = api.add_saved_query(query["name"], query["query"])
+                result = api.add_saved_query(**query)
                 num_queries += 1
             except ApiException as e:
                 if e.response.status_code == 400:

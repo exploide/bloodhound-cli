@@ -187,13 +187,14 @@ class Api:
         return self._send("GET", endpoint)
 
 
-    def add_saved_query(self, name, query):
+    def add_saved_query(self, name, query, description=""):
         """Add a custom query."""
 
         endpoint = "/api/v2/saved-queries"
         data = {
             "name": name,
             "query": query,
+            "description": description,
         }
         return self._send("POST", endpoint, data)
 
