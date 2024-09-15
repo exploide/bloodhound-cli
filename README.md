@@ -62,7 +62,7 @@ Commands:
   cypher     Run a raw Cypher query and print the response as JSON.
   domains    Get lists of domains.
   groups     Get lists of groups.
-  owned      Mark objects as owned.
+  mark       Mark objects as members of asset groups.
   queries    Import and export custom queries.
   stats      Get statistics on domains.
   upload     Upload and ingest files from the BloodHound collector.
@@ -207,12 +207,13 @@ APPSRV02.CONTOSO.COM
 ```
 
 
-### owned
+### mark
 
-The `owned` subcommand allows to mark a bunch of user and computer objects as owned.
+The `mark` subcommand allows to mark a bunch of user and computer objects as belonging to an asset group.
+BloodHound comes with the asset groups `owned` and `admin_tier_0` by default, but custom groups can be created, too.
 
 ```console
-$ bhcli owned --file successful_password_spraying.txt
+$ bhcli mark owned --file successful_password_spraying.txt
 INFO: Marked 6 objects as owned.
 ```
 
