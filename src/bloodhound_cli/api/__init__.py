@@ -161,6 +161,26 @@ class Api:
         return self._send("GET", endpoint)
 
 
+    def get_asset_groups(self, tag=None):
+        """Get asset groups."""
+
+        endpoint = "/api/v2/asset-groups"
+        if tag is not None:
+            endpoint += f"?tag=eq:{urllib.parse.quote_plus(tag)}"
+        return self._send("GET", endpoint)
+
+
+    def create_asset_group(self, name, tag):
+        """Create an asset group."""
+
+        endpoint = "/api/v2/asset-groups"
+        data = {
+            "name": name,
+            "tag": tag,
+        }
+        return self._send("POST", endpoint, data)
+
+
     def add_to_asset_group(self, asset_group_id, sids):
         """Add one or more objects identified by their sid to an asset group."""
 
@@ -175,7 +195,7 @@ class Api:
             }
             for sid in sids
         ]
-        return self._send("POST", endpoint, data)
+        return self._send("PUT", endpoint, data)
 
 
     def get_saved_queries(self, sort_by=None):
