@@ -12,7 +12,7 @@ from bloodhound_cli.logger import log
 @click.option("--file", "-f", type=click.Path(exists=True), help="File containing object names to own.")
 @click.option("--create-asset-group", metavar="NAME", type=str, help="Create the asset group with specified pretty name if it does not exist.")
 def mark(tag, objects, file, create_asset_group):
-    """Mark objects as members of asset groups.
+    """Mark objects as belonging to an asset group.
 
     The first argument is the tag of the asset group the objects should be added to (e.g. 'owned' or 'admin_tier_0').
 

@@ -62,7 +62,7 @@ Commands:
   cypher     Run a raw Cypher query and print the response as JSON.
   domains    Get lists of domains.
   groups     Get lists of groups.
-  mark       Mark objects as members of asset groups.
+  mark       Mark objects as belonging to an asset group.
   queries    Import and export custom queries.
   stats      Get statistics on domains.
   upload     Upload and ingest files from the BloodHound collector.
