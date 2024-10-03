@@ -274,10 +274,10 @@ class Api:
         return self._objects("Group", **kwargs)
 
 
-    def group_members(self, group_sid, kind=None):
-        """Return members of a given group (including indirect members)."""
+    def group_members(self, group_sid, kind=None, indirect_members=True):
+        """Return members of a given group (includes indirect members by default)."""
 
-        query = f"""MATCH (g:Group)<-[:MemberOf*1..]-({cypher.node("m", kind)})
+        query = f"""MATCH (g:Group)<-[:MemberOf*1..{"" if indirect_members else "1"}]-({cypher.node("m", kind)})
                 {cypher.where("g", objectid=group_sid)}
                 RETURN m
                 """

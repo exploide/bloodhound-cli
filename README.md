@@ -63,6 +63,7 @@ Commands:
   domains    Get lists of domains.
   groups     Get lists of groups.
   mark       Mark objects as belonging to an asset group.
+  members    Get lists of group members.
   queries    Import and export custom queries.
   stats      Get statistics on domains.
   upload     Upload and ingest files from the BloodHound collector.
@@ -149,6 +150,18 @@ ACCESS CONTROL ASSISTANCE OPERATORS@DEV.CONTOSO.COM
 ACCOUNT OPERATORS@DEV.CONTOSO.COM
 ADMINISTRATORS@DEV.CONTOSO.COM
 ALLOWED RODC PASSWORD REPLICATION GROUP@DEV.CONTOSO.COM
+...
+```
+
+
+### members
+
+The `members` subcommand outputs lists of group members.
+
+```console
+$ bhcli members --indirect 'DOMAIN ADMINS@DEV.CONTOSO.COM'
+ADMINISTRATOR@DEV.CONTOSO.COM
+JULIA@DEV.CONTOSO.COM
 ...
 ```
 
