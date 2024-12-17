@@ -206,7 +206,7 @@ EVERYONE@CONTOSO.COM                   GenericWrite        JANE@CONTOSO.COM     
 [*] Interesting privileges for guests
     0 relations found
 
-[*] Kerberoastable user accounts of high value (enabled)
+[*] Kerberoastable user accounts of high value (enabled, no MSA/gMSA)
     1 accounts found
 ADMINISTRATOR@CONTOSO.COM
 

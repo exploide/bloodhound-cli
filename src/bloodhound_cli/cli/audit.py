@@ -84,9 +84,15 @@ def audit(domain):
             print(table)
         print()
 
-        print("[*] Kerberoastable user accounts of high value (enabled)")
+        print("[*] Kerberoastable user accounts of high value (enabled, no MSA/gMSA)")
         result = api.users(domainsid=domsid, hasspn=True, enabled=True)
-        result = [n for n in result if "admin_tier_0" in n["properties"].get("system_tags", "")]
+        result = [
+            n
+            for n in result
+            if "admin_tier_0" in n["properties"].get("system_tags", "")
+            and not n["properties"].get("msa", False)
+            and not n["properties"].get("gmsa", False)
+        ]
         count = len(result)
         print(f"    {count} accounts found")
         result = sorted(n["properties"]["name"] for n in result)
