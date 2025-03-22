@@ -9,7 +9,7 @@ from bloodhound_cli.logger import log
 @click.command()
 @click.argument("tag")
 @click.argument("objects", metavar="[OBJECT]...", nargs=-1)
-@click.option("--file", "-f", type=click.Path(exists=True), help="File containing object names to own.")
+@click.option("--file", "-f", type=click.Path(exists=True, dir_okay=False, allow_dash=True), help="File containing object names to mark (use '-' for stdin).")
 @click.option("--create-asset-group", metavar="NAME", type=str, help="Create the asset group with specified pretty name if it does not exist.")
 def mark(tag, objects, file, create_asset_group):
     """Mark objects as belonging to an asset group.
@@ -35,7 +35,7 @@ def mark(tag, objects, file, create_asset_group):
     names_to_add = list(objects)
 
     if file:
-        with open(file, "r", encoding="UTF-8") as f:
+        with click.open_file(file, mode="r", encoding="UTF-8") as f:
             for line in f.readlines():
                 line = line.strip()
                 if line:
