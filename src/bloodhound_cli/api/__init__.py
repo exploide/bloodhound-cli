@@ -241,7 +241,7 @@ class Api:
         try:
             return self._send("POST", endpoint, data)
         except ApiException as e:
-            if e.response.status_code == 404:
+            if e.response is not None and e.response.status_code == 404:
                 return { "nodes": {}, "edges": [] }
             raise
 
