@@ -24,6 +24,9 @@ class Config:
         self.config_file = os.path.join(config_dir, "bhcli.ini")
 
         if not os.path.exists(self.config_file):
+            if "_BHCLI_COMPLETE" in os.environ:
+                # don't create a new config file if invoked by the shell's autocompletion engine
+                return
             log.info("No config file found, creating it...")
             os.makedirs(config_dir, mode=0o700, exist_ok=True)
             with open(self.config_file, "w", encoding="UTF-8") as f:
