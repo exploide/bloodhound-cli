@@ -6,10 +6,11 @@ import prettytable
 from bloodhound_cli.api.from_config import api
 from bloodhound_cli.constants import RID
 from bloodhound_cli.logger import log
+from .paramtypes import DomainType
 
 
 @click.command()
-@click.option("--domain", "-d", metavar="DOMAIN", help="Show stats for specific domain.")
+@click.option("--domain", "-d", type=DomainType(), help="Show stats for specific domain.")
 def stats(domain):
     """Get statistics on domains."""
 

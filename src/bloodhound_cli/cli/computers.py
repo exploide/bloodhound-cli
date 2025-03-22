@@ -4,10 +4,11 @@ import click
 
 from bloodhound_cli.api.from_config import api
 from bloodhound_cli.logger import log
+from .paramtypes import DomainType
 
 
 @click.command()
-@click.option("--domain", "-d", metavar="DOMAIN", help="Show only computers of specific domain.")
+@click.option("--domain", "-d", type=DomainType(), help="Show only computers of specific domain.")
 @click.option("--enabled/--disabled", default=None, help="Show only enabled/disabled computers.")
 @click.option("--owned/--not-owned", default=None, help="Show only computers (not) marked as owned.")
 @click.option("--sam", is_flag=True, help="Show SAM account name.")

@@ -7,6 +7,7 @@ from bloodhound_cli import cypher
 from bloodhound_cli.api.from_config import api
 from bloodhound_cli.constants import RID
 from bloodhound_cli.logger import log
+from .paramtypes import DomainType
 
 
 boring_relations = [
@@ -18,7 +19,7 @@ boring_relations = [
 
 
 @click.command()
-@click.option("--domain", "-d", metavar="DOMAIN", help="Audit specific domain only.")
+@click.option("--domain", "-d", type=DomainType(), help="Audit specific domain only.")
 def audit(domain):
     """Audit domains for potential security issues."""
 

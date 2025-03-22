@@ -4,10 +4,11 @@ import click
 
 from bloodhound_cli.api.from_config import api
 from bloodhound_cli.logger import log
+from .paramtypes import GroupType
 
 
 @click.command()
-@click.argument("group")
+@click.argument("group", type=GroupType())
 @click.option("--indirect", "-i", is_flag=True, help="Include indirect members and hide groups in output.")
 @click.option("--enabled/--disabled", default=None, help="Show only enabled/disabled members.")
 @click.option("--sam", is_flag=True, help="Show SAM account name.")
