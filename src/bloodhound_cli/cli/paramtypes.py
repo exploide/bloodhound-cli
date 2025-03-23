@@ -12,12 +12,16 @@ class AssetGroupTagType(ParamType):
 
     def shell_complete(self, ctx, param, incomplete):
         try:
-            asset_groups = sorted(api.get_asset_groups(), key=lambda g: g["tag"])
+            asset_groups = [
+                ag
+                for ag in api.get_asset_groups()
+                if ag["tag"].startswith(incomplete)
+            ]
         except ApiException:
             return []
         return [
-            CompletionItem(asset_group["tag"], help=asset_group["name"])
-            for asset_group in asset_groups if asset_group["tag"].startswith(incomplete)
+            CompletionItem(ag["tag"], help=ag["name"])
+            for ag in sorted(asset_groups, key=lambda g: g["tag"])
         ]
 
 
@@ -28,12 +32,16 @@ class DomainType(ParamType):
 
     def shell_complete(self, ctx, param, incomplete):
         try:
-            domains = sorted(d["name"] for d in api.domains(collected=True))
+            domains = [
+                domain["name"]
+                for domain in api.domains(collected=True)
+                if domain["name"].lower().startswith(incomplete.lower())
+            ]
         except ApiException:
             return []
         return [
             CompletionItem(domain)
-            for domain in domains if domain.lower().startswith(incomplete.lower())
+            for domain in sorted(domains)
         ]
 
 
@@ -44,10 +52,14 @@ class GroupType(ParamType):
 
     def shell_complete(self, ctx, param, incomplete):
         try:
-            groups = sorted(g["label"] for g in api.groups())
+            groups = [
+                group["label"]
+                for group in api.groups()
+                if group["label"].lower().startswith(incomplete.lower())
+            ]
         except ApiException:
             return []
         return [
             CompletionItem(group)
-            for group in groups if group.lower().startswith(incomplete.lower())
+            for group in sorted(groups)
         ]
