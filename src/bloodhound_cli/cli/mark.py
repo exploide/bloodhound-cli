@@ -4,10 +4,11 @@ import click
 
 from bloodhound_cli.api.from_config import api
 from bloodhound_cli.logger import log
+from .paramtypes import AssetGroupTagType
 
 
 @click.command()
-@click.argument("tag")
+@click.argument("tag", type=AssetGroupTagType())
 @click.argument("objects", metavar="[OBJECT]...", nargs=-1)
 @click.option("--file", "-f", type=click.Path(exists=True, dir_okay=False, allow_dash=True), help="File containing object names to mark (use '-' for stdin).")
 @click.option("--create-asset-group", metavar="NAME", type=str, help="Create the asset group with specified pretty name if it does not exist.")
