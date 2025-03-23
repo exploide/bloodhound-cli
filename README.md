@@ -40,6 +40,7 @@ $ pipx install .
 Thanks to the Click framework, you can get tab completion for the `bhcli` command for free.
 At least if your shell is bash, zsh or fish.
 See the [click documentation](https://click.palletsprojects.com/en/latest/shell-completion/#enabling-completion) if you want to enable this feature.
+Check it out, everything is 3x more awesome with tab completions!
 
 
 ## Usage
