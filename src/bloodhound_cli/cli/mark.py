@@ -21,12 +21,12 @@ def mark(tag, objects, file, create_asset_group):
     If the name contains an '@', it is treated as a User, otherwise as a Computer.
     """
 
-    asset_groups = api.get_asset_groups(tag=tag)["asset_groups"]
+    asset_groups = api.get_asset_groups(tag=tag)
     if len(asset_groups) == 0:
         if create_asset_group:
             log.info("Creating new asset group '%s' with tag '%s'.", create_asset_group, tag)
             api.create_asset_group(create_asset_group, tag)
-            asset_groups = api.get_asset_groups(tag=tag)["asset_groups"]
+            asset_groups = api.get_asset_groups(tag=tag)
         else:
             log.error("Asset group with tag '%s' not found! Use --create-asset-group to create it.", tag)
             sys.exit(1)

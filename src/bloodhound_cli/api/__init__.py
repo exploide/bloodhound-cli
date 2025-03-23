@@ -167,7 +167,7 @@ class Api:
         endpoint = "/api/v2/asset-groups"
         if tag is not None:
             endpoint += f"?tag=eq:{urllib.parse.quote_plus(tag)}"
-        return self._send("GET", endpoint)
+        return self._send("GET", endpoint)["asset_groups"]
 
 
     def create_asset_group(self, name, tag):
