@@ -12,6 +12,10 @@ Retrieve lists of user names for further processing, grep in the description fie
 `bhcli` can also mark a bunch of objects as owned, import/export your custom queries and might perform an audit to search for interesting permissions.
 Check the help message below for all features.
 
+> [!IMPORTANT]
+> Do **not** confuse it with [bloodhound-cli by SpecterOps](https://github.com/SpecterOps/bloodhound-cli) which serves another purpose and is used to start a containerized BloodHound CE instance and configure it.
+> Unfortunately, both tools share the project name bloodhound-cli, but SpecterOps' installs as `bloodhound-cli` while my project here installs as `bhcli`.
+
 
 ## Installation
 
