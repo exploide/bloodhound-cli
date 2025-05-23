@@ -127,4 +127,18 @@ def audit(domain):
             print(n)
         print()
 
+        print("[*] Computers with unsupported operating systems (enabled)")
+        query = f"""MATCH (c:Computer)
+                {cypher.where("c", domainsid=domsid, enabled=True)}
+                AND c.operatingsystem =~ '(?i).*Windows.* (2000|2003|2008|2012|xp|vista|7|8|me|nt).*'
+                RETURN c
+                """
+        result = api.cypher(query)["nodes"].values()
+        count = len(result)
+        print(f"    {count} computers found")
+        result = sorted((n["properties"]["operatingsystem"], n["properties"]["name"]) for n in result)
+        for n in result:
+            print(f"{n[1]} ({n[0]})")
+        print()
+
         print()

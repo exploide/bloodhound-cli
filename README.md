@@ -222,6 +222,10 @@ JOHN@CONTOSO.COM
 [*] Accounts trusted for unconstrained delegation (enabled, no DCs)
     1 accounts found
 APPSRV02.CONTOSO.COM
+
+[*] Computers with unsupported operating systems (enabled)
+    1 computers found
+APPSRV01.CONTOSO.COM (WINDOWS SERVER 2012 R2 DATACENTER)
 ```
 
 
@@ -254,7 +258,7 @@ The `cypher` subcommand lets you directly run a Cypher query against the databas
 It outputs JSON data which can be further processed, e.g. with `jq`.
 
 ```console
-$ bhcli cypher 'MATCH (c:Computer) RETURN c' | jq -c '.nodes[].properties | [.name, .haslaps]'
-["WEB06.DEV.CONTOSO.COM",true]
-["DC02.DEV.CONTOSO.COM",false]
+$ bhcli cypher 'MATCH (c:Computer) RETURN c' | jq -c '.nodes[].properties | [.name, .operatingsystem]'
+["WEB06.DEV.CONTOSO.COM","WINDOWS SERVER 2019 STANDARD"]
+["DC02.DEV.CONTOSO.COM","WINDOWS SERVER 2022 DATACENTER"]
 ```
