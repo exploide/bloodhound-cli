@@ -73,7 +73,11 @@ class Api:
             headers["Authorization"] = f"Bearer {self._bearer}"
 
         log.debug("Sending %s request to API endpoint %s", method, endpoint)
-        result = requests.request(method=method, url=endpoint_url, headers=headers, data=data, timeout=(3.1, 60))
+        try:
+            result = requests.request(method=method, url=endpoint_url, headers=headers, data=data, timeout=(3.1, 60))
+        except requests.exceptions.ConnectionError as e:
+            log.debug("Got error during connection attempt. Original error is: %s", e)
+            raise ApiException(f"Could not connect to API server at '{self._url}'. Make sure BloodHound is running and accessible or run 'bhcli --debug ...' for more information.") from e
         log.debug("Received response with code %d:", result.status_code)
         log.debug("%s", result.text)
 
@@ -104,10 +108,11 @@ class Api:
         try:
             return self._send("POST", endpoint, data)
         except ApiException as e:
-            if e.response.status_code == 401:
-                raise ApiException("Authentication failure, probably the password is wrong.", e.response) from e
-            if e.response.status_code == 404:
-                raise ApiException("Authentication failure, probably the username does not exist or the URL is incorrect.", e.response) from e
+            if e.response is not None:
+                if e.response.status_code == 401:
+                    raise ApiException("Authentication failure, probably the password is wrong.", e.response) from e
+                if e.response.status_code == 404:
+                    raise ApiException("Authentication failure, probably the username does not exist or the URL is incorrect.", e.response) from e
             raise
 
 
