@@ -85,9 +85,9 @@ class Api:
             if result.status_code == 401:
                 raise ApiException("Authentication failure, try to obtain an API token with the auth subcommand first.", result)
             if result.status_code == 429:
-                rate_limit_duration = int(result.headers["X-Rate-Limit-Duration"])
-                log.info("Hit request rate limiting. Waiting for %d seconds, then trying again...", rate_limit_duration)
-                time.sleep(rate_limit_duration)
+                delay = 1
+                log.info("Hit request rate limiting. Waiting for %d seconds, then trying again...", delay)
+                time.sleep(delay)
                 return self._send(method, endpoint, data, content_type)
             raise ApiException("Received unexpected response from server. Run 'bhcli --debug ...' for more information.", result)
 
