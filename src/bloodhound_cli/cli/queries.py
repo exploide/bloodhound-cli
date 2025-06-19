@@ -52,8 +52,15 @@ def queries(file, save):
         num_queries = 0
         for query in queries_to_import:
             try:
-                result = api.add_saved_query(**query)
+                result = api.add_saved_query(
+                    query["name"],
+                    query["query"],
+                    query.get("description", ""),
+                )
                 num_queries += 1
+            except KeyError as e:
+                log.error('Invalid input format, missing key %s', e)
+                sys.exit(1)
             except ApiException as e:
                 if e.response is not None and e.response.status_code == 400:
                     log.error('Could not import query "%s": %s', query["name"], '\n'.join(error["message"] for error in e.response.json()["errors"]))
